@@ -1,0 +1,19 @@
+{
+  "name": "web-report",
+  "version": "1.0.0",
+  "description": "A website that generates a report for your website in different browsers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humaidk2/web-report.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/humaidk2/web-report/issues"
+  },
+  "homepage": "https://github.com/humaidk2/web-report#readme"
+}
