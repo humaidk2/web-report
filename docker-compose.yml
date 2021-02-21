@@ -1,0 +1,31 @@
+version: '2.4'
+services:
+    report_backend:
+        build:
+            context: ./server/
+            dockerfile: Dockerfile
+        ports: [5000:3000]
+        environment:
+            - PORT=3000
+            - HOST=localhost:3000
+            - NODE_ENV=development
+            - DEBUG=pw:api
+        volumes:
+            - ./server/src:/usr/src/app/src
+        restart: always
+    frontend:
+        build:
+            context: ./report-frontend/
+            dockerfile: Dockerfile
+        ports: [3000:3000]
+        environment:
+            - PORT=3000
+            - HOST=localhost:3000
+            - NODE_ENV=development
+        volumes:
+            - ./report-frontend/components:/usr/src/app/components
+            - ./report-frontend/pages:/usr/src/app/pages
+            - ./report-frontend/public:/usr/src/app/public
+            - ./report-frontend/styles:/usr/src/app/styles
+        restart: always
+        depends_on: [report_backend]
