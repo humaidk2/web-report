@@ -2,7 +2,7 @@
 
 Description:
 
-A website that generates simulated screenshots of your website in different browsers on various devices
+A website that generates simulated screenshots of your website in different browsers on various devices using PlayWright.
 
 ![Image of form of web-report](./screenshot1.png)
 
