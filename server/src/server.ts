@@ -6,7 +6,7 @@ import playwright = require('playwright')
 const { webkit, devices } = playwright
 const pixel = devices['Pixel 2 XL']
 const iPhone11 = devices['iPhone 11 Pro']
-
+const reports: any = []
 const app = express()
 
 const PORT = process.env.PORT || 3000
@@ -21,23 +21,32 @@ app.use(bodyParser.json())
 
 app.use(helmet())
 app.set('json spaces', 2)
-
-app.get('/generate', (req, res) => {
+app.get('/report', (req, res) => {
+    const { id } = req.query
+    const userReports = reports.filter((report: any) => report.id === id)
+    res.json({ reports: userReports })
+})
+app.post('/generate', (req, res) => {
     const { url, devices }: any = req.body
+    const id = reports.length + ''
     devices.forEach((device: any) => {
-        generateReport(device, url)
+        generateReport(device, url, id)
         status[device] = 'loading'
     })
-    // generateReport('Pixel 2 XL', url)
-    // generateReport('iPhone 11 Pro', url)
-    res.json({ message: 'success' })
+    res.json({ message: 'success', id })
 })
 app.get('/status', (req, res) => {
     res.json({ status })
 })
-async function generateReport(selectedDevice: string, url: string) {
+async function generateReport(selectedDevice: string, url: string, id: string) {
     const device = devices[selectedDevice]
     const fileName = selectedDevice.toLowerCase().split(' ').join('-')
+    reports.push({
+        id,
+        device: selectedDevice,
+        url,
+        source: `${id}/${fileName}.png`,
+    })
     try {
         const browser = await webkit.launch()
         const context = await browser.newContext(device)
@@ -45,7 +54,7 @@ async function generateReport(selectedDevice: string, url: string) {
         await page.goto(url)
 
         await page.screenshot({
-            path: `./static/${url}/${fileName}.png`,
+            path: `./static/${id}/${fileName}.png`,
         })
 
         await browser.close()
